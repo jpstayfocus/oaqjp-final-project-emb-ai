@@ -1,8 +1,12 @@
+"""Emotion detection functions using the Watson NLP service."""
+
 import json
 import requests
 
 
 def emotion_detector(text_to_analyze):
+    """Detect emotions in text and return emotion scores."""
+
     url = (
         "https://sn-watson-emotion.labs.skills.network/v1/"
         "watson.runtime.nlp.v1/NlpService/EmotionPredict"
@@ -24,6 +28,16 @@ def emotion_detector(text_to_analyze):
         json=input_json,
         headers=headers
     )
+
+    if response.status_code == 400:
+        return {
+            "anger": None,
+            "disgust": None,
+            "fear": None,
+            "joy": None,
+            "sadness": None,
+            "dominant_emotion": None
+        }
 
     formatted_response = json.loads(response.text)
 
